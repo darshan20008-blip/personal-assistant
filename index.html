@@ -1,0 +1,679 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice-Reactive 3D Ball Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { margin: 0; overflow: hidden; font-family: 'Inter', sans-serif; background-color: #05050a; color: #f3f4f6; }
+        #canvas-container { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 1; }
+        .glass-panel { background: rgba(15, 15, 25, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 3px; }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.pointer-events-auto{pointer-events:auto}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.right-3{right:0.75rem}.top-3{top:0.75rem}.z-10{z-index:10}.z-50{z-index:50}.mr-1{margin-right:0.25rem}.flex{display:flex}.hidden{display:none}.h-2{height:0.5rem}.h-3{height:0.75rem}.h-full{height:100%}.h-screen{height:100vh}.max-h-64{max-height:16rem}.max-h-\[85vh\]{max-height:85vh}.w-0{width:0px}.w-24{width:6rem}.w-3{width:0.75rem}.w-32{width:8rem}.w-full{width:100%}.w-screen{width:100vw}.max-w-2xl{max-width:42rem}.flex-1{flex:1 1 0%}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite}.cursor-pointer{cursor:pointer}.select-none{-webkit-user-select:none;user-select:none}.list-disc{list-style-type:disc}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.justify-around{justify-content:space-around}.gap-4{gap:1rem}.space-x-2 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(0.5rem * var(--tw-space-x-reverse));margin-left:calc(0.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-3 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(0.75rem * var(--tw-space-x-reverse));margin-left:calc(0.75rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.rounded{border-radius:0.25rem}.rounded-2xl{border-radius:1rem}.rounded-3xl{border-radius:1.5rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-amber-500\/30{border-color:rgb(245 158 11 / 0.3)}.border-cyan-500\/30{border-color:rgb(6 182 212 / 0.3)}.border-white\/10{border-color:rgb(255 255 255 / 0.1)}.border-white\/5{border-color:rgb(255 255 255 / 0.05)}.bg-black\/40{background-color:rgb(0 0 0 / 0.4)}.bg-black\/80{background-color:rgb(0 0 0 / 0.8)}.bg-cyan-400{--tw-bg-opacity:1;background-color:rgb(34 211 238 / var(--tw-bg-opacity, 1))}.bg-cyan-500\/20{background-color:rgb(6 182 212 / 0.2)}.bg-gray-800{--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity, 1))}.bg-gray-900\/80{background-color:rgb(17 24 39 / 0.8)}.bg-gray-950{--tw-bg-opacity:1;background-color:rgb(3 7 18 / var(--tw-bg-opacity, 1))}.bg-white\/10{background-color:rgb(255 255 255 / 0.1)}.bg-white\/5{background-color:rgb(255 255 255 / 0.05)}.bg-gradient-to-r{background-image:linear-gradient(to right, var(--tw-gradient-stops))}.from-cyan-400{--tw-gradient-from:#22d3ee var(--tw-gradient-from-position);--tw-gradient-to:rgb(34 211 238 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-cyan-500{--tw-gradient-from:#06b6d4 var(--tw-gradient-from-position);--tw-gradient-to:rgb(6 182 212 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-blue-600{--tw-gradient-to:#2563eb var(--tw-gradient-to-position)}.to-indigo-500{--tw-gradient-to:#6366f1 var(--tw-gradient-to-position)}.bg-clip-text{-webkit-background-clip:text;background-clip:text}.p-2{padding:0.5rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.pl-5{padding-left:1.25rem}.pr-2{padding-right:0.5rem}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-relaxed{line-height:1.625}.tracking-wider{letter-spacing:0.05em}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77 / var(--tw-text-opacity, 1))}.text-cyan-300{--tw-text-opacity:1;color:rgb(103 232 249 / var(--tw-text-opacity, 1))}.text-cyan-400{--tw-text-opacity:1;color:rgb(34 211 238 / var(--tw-text-opacity, 1))}.text-gray-200{--tw-text-opacity:1;color:rgb(229 231 235 / var(--tw-text-opacity, 1))}.text-gray-300{--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-indigo-400{--tw-text-opacity:1;color:rgb(129 140 248 / var(--tw-text-opacity, 1))}.text-transparent{color:transparent}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.accent-cyan-400{accent-color:#22d3ee}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-cyan-500\/25{--tw-shadow-color:rgb(6 182 212 / 0.25);--tw-shadow:var(--tw-shadow-colored)}.backdrop-blur-md{--tw-backdrop-blur:blur(12px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-75{transition-duration:75ms}.hover\:bg-cyan-500\/30:hover{background-color:rgb(6 182 212 / 0.3)}.hover\:bg-white\/10:hover{background-color:rgb(255 255 255 / 0.1)}.hover\:bg-white\/20:hover{background-color:rgb(255 255 255 / 0.2)}.hover\:from-cyan-400:hover{--tw-gradient-from:#22d3ee var(--tw-gradient-from-position);--tw-gradient-to:rgb(34 211 238 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.hover\:to-blue-500:hover{--tw-gradient-to:#3b82f6 var(--tw-gradient-to-position)}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.focus\:border-cyan-500:focus{--tw-border-opacity:1;border-color:rgb(6 182 212 / var(--tw-border-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}@media (min-width: 640px){.sm\:inline{display:inline}.sm\:w-32{width:8rem}.sm\:w-48{width:12rem}}@media (min-width: 768px){.md\:w-auto{width:auto}.md\:flex-row{flex-direction:row}.md\:justify-start{justify-content:flex-start}.md\:p-6{padding:1.5rem}}</style></head>
+<body class="h-screen w-screen flex flex-col justify-between select-none">
+
+    <div id="canvas-container"><canvas width="960" height="917" style="display: block; width: 768px; height: 734px;"></canvas></div>
+
+    <header class="relative z-10 p-4 md:p-6 flex justify-between items-center pointer-events-none">
+        <div class="glass-panel px-4 py-2 rounded-2xl flex items-center space-x-3 pointer-events-auto shadow-2xl">
+            <div class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse" id="status-dot"></div>
+            <h1 class="font-bold text-lg tracking-wider bg-gradient-to-r from-cyan-400 to-indigo-500 bg-clip-text text-transparent">VOICE 3D STUDIO</h1>
+        </div>
+        <div class="flex space-x-3 pointer-events-auto">
+            <button onclick="toggleModal('codeModal')" class="glass-panel px-4 py-2 rounded-xl text-sm font-semibold hover:bg-white/10 transition flex items-center space-x-2 shadow-lg">
+                <i class="fa-solid fa-code text-cyan-400"></i>
+                <span class="hidden sm:inline">Export Code</span>
+            </button>
+            <button onclick="toggleModal('guideModal')" class="glass-panel px-4 py-2 rounded-xl text-sm font-semibold hover:bg-white/10 transition flex items-center space-x-2 shadow-lg">
+                <i class="fa-solid fa-circle-question text-indigo-400"></i>
+                <span class="hidden sm:inline">Hosting Guide</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="relative z-10 px-6 pointer-events-none flex justify-center items-center">
+        <div id="alert-box" class="hidden glass-panel px-4 py-2 rounded-xl text-xs text-amber-300 border border-amber-500/30 flex items-center space-x-2 pointer-events-auto">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span id="alert-text">Microphone access required for voice reactivity.</span>
+        </div>
+    </div>
+
+    <footer class="relative z-10 p-4 md:p-6 flex flex-col md:flex-row justify-between items-center gap-4 pointer-events-none">
+        <!-- Mic Toggle & Audio Stats -->
+        <div class="glass-panel p-4 rounded-3xl flex items-center space-x-6 pointer-events-auto shadow-2xl w-full md:w-auto justify-between md:justify-start">
+            <button id="mic-btn" onclick="toggleMicrophone()" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white px-6 py-3 rounded-2xl font-bold flex items-center space-x-3 transition shadow-lg shadow-cyan-500/25">
+                <i id="mic-icon" class="fa-solid fa-microphone text-lg"></i>
+                <span id="mic-text">Start Voice Input</span>
+            </button>
+            <div class="flex flex-col space-y-1 pr-2">
+                <span class="text-xs text-gray-400 font-medium">Voice Intensity</span>
+                <div class="w-32 sm:w-48 h-2 bg-gray-800 rounded-full overflow-hidden">
+                    <div id="volume-bar" class="h-full bg-cyan-400 transition-all duration-75 w-0"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sphere Customization Controls -->
+        <div class="glass-panel p-4 rounded-3xl flex items-center space-x-6 pointer-events-auto shadow-2xl w-full md:w-auto justify-around">
+            <div class="flex flex-col space-y-1">
+                <label class="text-xs text-gray-400 font-medium flex justify-between">
+                    <span>Style</span>
+                </label>
+                <select id="sphere-style" onchange="updateSphereStyle()" class="bg-gray-900/80 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-cyan-500">
+                    <option value="wireframe">Wireframe Cyber</option>
+                    <option value="normal">Normal Shader</option>
+                    <option value="crystal">Crystal Gloss</option>
+                    <option value="particles">Energy Particles</option>
+                </select>
+            </div>
+            <div class="flex flex-col space-y-1">
+                <label class="text-xs text-gray-400 font-medium">Reactivity</label>
+                <input id="sensitivity-slider" type="range" min="0.5" max="3" step="0.1" value="1.5" class="accent-cyan-400 w-24 sm:w-32 cursor-pointer">
+            </div>
+        </div>
+    </footer>
+
+    <div id="codeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="glass-panel w-full max-w-2xl max-h-[85vh] rounded-3xl flex flex-col overflow-hidden shadow-2xl border border-white/10">
+            <div class="p-5 border-b border-white/10 flex justify-between items-center bg-white/5">
+                <h3 class="font-bold text-lg text-cyan-400 flex items-center space-x-2">
+                    <i class="fa-solid fa-code"></i>
+                    <span>Export 3D Voice Page Code</span>
+                </h3>
+                <button onclick="toggleModal('codeModal')" class="text-gray-400 hover:text-white transition p-2"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-4 text-sm text-gray-300">
+                <p>You can copy this complete, self-contained single-file code to host your voice-reactive 3D ball anywhere (Vercel, GitHub Pages, Netlify, or your own server).</p>
+                <div class="relative">
+                    <button onclick="copyCode()" class="absolute top-3 right-3 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 px-3 py-1.5 rounded-lg text-xs font-semibold transition border border-cyan-500/30">
+                        <i class="fa-solid fa-copy mr-1"></i> Copy Code
+                    </button>
+                    <pre id="code-content" class="bg-gray-950 p-4 rounded-2xl text-xs font-mono text-cyan-300 overflow-x-auto border border-white/5 max-h-64">&lt;html lang="en"&gt;&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Voice-Reactive 3D Ball Studio&lt;/title&gt;
+    &lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"&gt;
+    &lt;style&gt;
+        body { margin: 0; overflow: hidden; font-family: 'Inter', sans-serif; background-color: #05050a; color: #f3f4f6; }
+        #canvas-container { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 1; }
+        .glass-panel { background: rgba(15, 15, 25, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 3px; }
+    &lt;/style&gt;
+&lt;style&gt;*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.pointer-events-auto{pointer-events:auto}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.right-3{right:0.75rem}.top-3{top:0.75rem}.z-10{z-index:10}.z-50{z-index:50}.mr-1{margin-right:0.25rem}.flex{display:flex}.hidden{display:none}.h-2{height:0.5rem}.h-3{height:0.75rem}.h-full{height:100%}.h-screen{height:100vh}.max-h-64{max-height:16rem}.max-h-\[85vh\]{max-height:85vh}.w-0{width:0px}.w-24{width:6rem}.w-3{width:0.75rem}.w-32{width:8rem}.w-full{width:100%}.w-screen{width:100vw}.max-w-2xl{max-width:42rem}.flex-1{flex:1 1 0%}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite}.cursor-pointer{cursor:pointer}.select-none{-webkit-user-select:none;user-select:none}.list-disc{list-style-type:disc}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.justify-around{justify-content:space-around}.gap-4{gap:1rem}.space-x-2 &gt; :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(0.5rem * var(--tw-space-x-reverse));margin-left:calc(0.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-3 &gt; :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(0.75rem * var(--tw-space-x-reverse));margin-left:calc(0.75rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-6 &gt; :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-1 &gt; :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 &gt; :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 &gt; :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.rounded{border-radius:0.25rem}.rounded-2xl{border-radius:1rem}.rounded-3xl{border-radius:1.5rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-amber-500\/30{border-color:rgb(245 158 11 / 0.3)}.border-cyan-500\/30{border-color:rgb(6 182 212 / 0.3)}.border-white\/10{border-color:rgb(255 255 255 / 0.1)}.border-white\/5{border-color:rgb(255 255 255 / 0.05)}.bg-black\/40{background-color:rgb(0 0 0 / 0.4)}.bg-black\/80{background-color:rgb(0 0 0 / 0.8)}.bg-cyan-400{--tw-bg-opacity:1;background-color:rgb(34 211 238 / var(--tw-bg-opacity, 1))}.bg-cyan-500\/20{background-color:rgb(6 182 212 / 0.2)}.bg-gray-800{--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity, 1))}.bg-gray-900\/80{background-color:rgb(17 24 39 / 0.8)}.bg-gray-950{--tw-bg-opacity:1;background-color:rgb(3 7 18 / var(--tw-bg-opacity, 1))}.bg-white\/10{background-color:rgb(255 255 255 / 0.1)}.bg-white\/5{background-color:rgb(255 255 255 / 0.05)}.bg-gradient-to-r{background-image:linear-gradient(to right, var(--tw-gradient-stops))}.from-cyan-400{--tw-gradient-from:#22d3ee var(--tw-gradient-from-position);--tw-gradient-to:rgb(34 211 238 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-cyan-500{--tw-gradient-from:#06b6d4 var(--tw-gradient-from-position);--tw-gradient-to:rgb(6 182 212 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-blue-600{--tw-gradient-to:#2563eb var(--tw-gradient-to-position)}.to-indigo-500{--tw-gradient-to:#6366f1 var(--tw-gradient-to-position)}.bg-clip-text{-webkit-background-clip:text;background-clip:text}.p-2{padding:0.5rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.pl-5{padding-left:1.25rem}.pr-2{padding-right:0.5rem}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-relaxed{line-height:1.625}.tracking-wider{letter-spacing:0.05em}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77 / var(--tw-text-opacity, 1))}.text-cyan-300{--tw-text-opacity:1;color:rgb(103 232 249 / var(--tw-text-opacity, 1))}.text-cyan-400{--tw-text-opacity:1;color:rgb(34 211 238 / var(--tw-text-opacity, 1))}.text-gray-200{--tw-text-opacity:1;color:rgb(229 231 235 / var(--tw-text-opacity, 1))}.text-gray-300{--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-indigo-400{--tw-text-opacity:1;color:rgb(129 140 248 / var(--tw-text-opacity, 1))}.text-transparent{color:transparent}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.accent-cyan-400{accent-color:#22d3ee}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-cyan-500\/25{--tw-shadow-color:rgb(6 182 212 / 0.25);--tw-shadow:var(--tw-shadow-colored)}.backdrop-blur-md{--tw-backdrop-blur:blur(12px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-75{transition-duration:75ms}.hover\:bg-cyan-500\/30:hover{background-color:rgb(6 182 212 / 0.3)}.hover\:bg-white\/10:hover{background-color:rgb(255 255 255 / 0.1)}.hover\:bg-white\/20:hover{background-color:rgb(255 255 255 / 0.2)}.hover\:from-cyan-400:hover{--tw-gradient-from:#22d3ee var(--tw-gradient-from-position);--tw-gradient-to:rgb(34 211 238 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.hover\:to-blue-500:hover{--tw-gradient-to:#3b82f6 var(--tw-gradient-to-position)}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.focus\:border-cyan-500:focus{--tw-border-opacity:1;border-color:rgb(6 182 212 / var(--tw-border-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}@media (min-width: 640px){.sm\:inline{display:inline}.sm\:w-32{width:8rem}.sm\:w-48{width:12rem}}@media (min-width: 768px){.md\:w-auto{width:auto}.md\:flex-row{flex-direction:row}.md\:justify-start{justify-content:flex-start}.md\:p-6{padding:1.5rem}}&lt;/style&gt;&lt;/head&gt;
+&lt;body class="h-screen w-screen flex flex-col justify-between select-none"&gt;
+
+    &lt;div id="canvas-container"&gt;&lt;canvas width="960" height="917" style="display: block; width: 768px; height: 734px;"&gt;&lt;/canvas&gt;&lt;/div&gt;
+
+    &lt;header class="relative z-10 p-4 md:p-6 flex justify-between items-center pointer-events-none"&gt;
+        &lt;div class="glass-panel px-4 py-2 rounded-2xl flex items-center space-x-3 pointer-events-auto shadow-2xl"&gt;
+            &lt;div class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse" id="status-dot"&gt;&lt;/div&gt;
+            &lt;h1 class="font-bold text-lg tracking-wider bg-gradient-to-r from-cyan-400 to-indigo-500 bg-clip-text text-transparent"&gt;VOICE 3D STUDIO&lt;/h1&gt;
+        &lt;/div&gt;
+        &lt;div class="flex space-x-3 pointer-events-auto"&gt;
+            &lt;button onclick="toggleModal('codeModal')" class="glass-panel px-4 py-2 rounded-xl text-sm font-semibold hover:bg-white/10 transition flex items-center space-x-2 shadow-lg"&gt;
+                &lt;i class="fa-solid fa-code text-cyan-400"&gt;&lt;/i&gt;
+                &lt;span class="hidden sm:inline"&gt;Export Code&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;button onclick="toggleModal('guideModal')" class="glass-panel px-4 py-2 rounded-xl text-sm font-semibold hover:bg-white/10 transition flex items-center space-x-2 shadow-lg"&gt;
+                &lt;i class="fa-solid fa-circle-question text-indigo-400"&gt;&lt;/i&gt;
+                &lt;span class="hidden sm:inline"&gt;Hosting Guide&lt;/span&gt;
+            &lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;div class="relative z-10 px-6 pointer-events-none flex justify-center items-center"&gt;
+        &lt;div id="alert-box" class="hidden glass-panel px-4 py-2 rounded-xl text-xs text-amber-300 border border-amber-500/30 flex items-center space-x-2 pointer-events-auto"&gt;
+            &lt;i class="fa-solid fa-triangle-exclamation"&gt;&lt;/i&gt;
+            &lt;span id="alert-text"&gt;Microphone access required for voice reactivity.&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;footer class="relative z-10 p-4 md:p-6 flex flex-col md:flex-row justify-between items-center gap-4 pointer-events-none"&gt;
+        &lt;!-- Mic Toggle &amp; Audio Stats --&gt;
+        &lt;div class="glass-panel p-4 rounded-3xl flex items-center space-x-6 pointer-events-auto shadow-2xl w-full md:w-auto justify-between md:justify-start"&gt;
+            &lt;button id="mic-btn" onclick="toggleMicrophone()" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white px-6 py-3 rounded-2xl font-bold flex items-center space-x-3 transition shadow-lg shadow-cyan-500/25"&gt;
+                &lt;i id="mic-icon" class="fa-solid fa-microphone text-lg"&gt;&lt;/i&gt;
+                &lt;span id="mic-text"&gt;Start Voice Input&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;div class="flex flex-col space-y-1 pr-2"&gt;
+                &lt;span class="text-xs text-gray-400 font-medium"&gt;Voice Intensity&lt;/span&gt;
+                &lt;div class="w-32 sm:w-48 h-2 bg-gray-800 rounded-full overflow-hidden"&gt;
+                    &lt;div id="volume-bar" class="h-full bg-cyan-400 transition-all duration-75 w-0"&gt;&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Sphere Customization Controls --&gt;
+        &lt;div class="glass-panel p-4 rounded-3xl flex items-center space-x-6 pointer-events-auto shadow-2xl w-full md:w-auto justify-around"&gt;
+            &lt;div class="flex flex-col space-y-1"&gt;
+                &lt;label class="text-xs text-gray-400 font-medium flex justify-between"&gt;
+                    &lt;span&gt;Style&lt;/span&gt;
+                &lt;/label&gt;
+                &lt;select id="sphere-style" onchange="updateSphereStyle()" class="bg-gray-900/80 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-cyan-500"&gt;
+                    &lt;option value="wireframe"&gt;Wireframe Cyber&lt;/option&gt;
+                    &lt;option value="normal"&gt;Normal Shader&lt;/option&gt;
+                    &lt;option value="crystal"&gt;Crystal Gloss&lt;/option&gt;
+                    &lt;option value="particles"&gt;Energy Particles&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div class="flex flex-col space-y-1"&gt;
+                &lt;label class="text-xs text-gray-400 font-medium"&gt;Reactivity&lt;/label&gt;
+                &lt;input id="sensitivity-slider" type="range" min="0.5" max="3" step="0.1" value="1.5" class="accent-cyan-400 w-24 sm:w-32 cursor-pointer"&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/footer&gt;
+
+    &lt;div id="codeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-4"&gt;
+        &lt;div class="glass-panel w-full max-w-2xl max-h-[85vh] rounded-3xl flex flex-col overflow-hidden shadow-2xl border border-white/10"&gt;
+            &lt;div class="p-5 border-b border-white/10 flex justify-between items-center bg-white/5"&gt;
+                &lt;h3 class="font-bold text-lg text-cyan-400 flex items-center space-x-2"&gt;
+                    &lt;i class="fa-solid fa-code"&gt;&lt;/i&gt;
+                    &lt;span&gt;Export 3D Voice Page Code&lt;/span&gt;
+                &lt;/h3&gt;
+                &lt;button onclick="toggleModal('codeModal')" class="text-gray-400 hover:text-white transition p-2"&gt;&lt;i class="fa-solid fa-xmark text-lg"&gt;&lt;/i&gt;&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-4 text-sm text-gray-300"&gt;
+                &lt;p&gt;You can copy this complete, self-contained single-file code to host your voice-reactive 3D ball anywhere (Vercel, GitHub Pages, Netlify, or your own server).&lt;/p&gt;
+                &lt;div class="relative"&gt;
+                    &lt;button onclick="copyCode()" class="absolute top-3 right-3 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 px-3 py-1.5 rounded-lg text-xs font-semibold transition border border-cyan-500/30"&gt;
+                        &lt;i class="fa-solid fa-copy mr-1"&gt;&lt;/i&gt; Copy Code
+                    &lt;/button&gt;
+                    &lt;pre id="code-content" class="bg-gray-950 p-4 rounded-2xl text-xs font-mono text-cyan-300 overflow-x-auto border border-white/5 max-h-64"&gt;&lt;/pre&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="p-4 border-t border-white/10 bg-white/5 flex justify-end"&gt;
+                &lt;button onclick="toggleModal('codeModal')" class="bg-white/10 hover:bg-white/20 px-5 py-2 rounded-xl text-sm font-semibold transition"&gt;Close&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div id="guideModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-4"&gt;
+        &lt;div class="glass-panel w-full max-w-2xl max-h-[85vh] rounded-3xl flex flex-col overflow-hidden shadow-2xl border border-white/10"&gt;
+            &lt;div class="p-5 border-b border-white/10 flex justify-between items-center bg-white/5"&gt;
+                &lt;h3 class="font-bold text-lg text-indigo-400 flex items-center space-x-2"&gt;
+                    &lt;i class="fa-solid fa-book-open"&gt;&lt;/i&gt;
+                    &lt;span&gt;How to Build &amp;amp; Host This 3D Page&lt;/span&gt;
+                &lt;/h3&gt;
+                &lt;button onclick="toggleModal('guideModal')" class="text-gray-400 hover:text-white transition p-2"&gt;&lt;i class="fa-solid fa-xmark text-lg"&gt;&lt;/i&gt;&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-4 text-sm text-gray-300 leading-relaxed"&gt;
+                &lt;h4 class="font-bold text-white text-base"&gt;1. Local Setup&lt;/h4&gt;
+                &lt;p&gt;Save the exported code into a file named &lt;code class="bg-black/40 px-2 py-0.5 rounded text-cyan-300 font-mono"&gt;index.html&lt;/code&gt; on your computer. Double-click the file to open it directly in any modern browser (Chrome, Safari, Firefox, Edge).&lt;/p&gt;
+                
+                &lt;h4 class="font-bold text-white text-base"&gt;2. Microphone Permissions&lt;/h4&gt;
+                &lt;p&gt;When you click &lt;strong&gt;"Start Voice Input"&lt;/strong&gt;, your browser will prompt you for microphone access. Make sure to allow it. Note that modern browsers require either &lt;code class="bg-black/40 px-2 py-0.5 rounded text-cyan-300 font-mono"&gt;https://&lt;/code&gt; or &lt;code class="bg-black/40 px-2 py-0.5 rounded text-cyan-300 font-mono"&gt;http://localhost&lt;/code&gt; to activate the microphone API.&lt;/p&gt;
+
+                &lt;h4 class="font-bold text-white text-base"&gt;3. Hosting for Free&lt;/h4&gt;
+                &lt;ul class="list-disc pl-5 space-y-2"&gt;
+                    &lt;li&gt;&lt;strong&gt;GitHub Pages:&lt;/strong&gt; Push your &lt;code class="text-cyan-300 font-mono"&gt;index.html&lt;/code&gt; to a GitHub repository and enable Pages in settings.&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Vercel / Netlify:&lt;/strong&gt; Drag and drop your project folder or connect your Git repository for instant live deployment with HTTPS enabled out of the box.&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+            &lt;div class="p-4 border-t border-white/10 bg-white/5 flex justify-end"&gt;
+                &lt;button onclick="toggleModal('guideModal')" class="bg-white/10 hover:bg-white/20 px-5 py-2 rounded-xl text-sm font-semibold transition"&gt;Close&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        let scene, camera, renderer, sphere, particlesMesh, audioCtx, analyser, microphone, dataArray;
+        let isListening = false;
+        let currentStyle = 'wireframe';
+        let clock = new THREE.Clock();
+
+        function init3D() {
+            const container = document.getElementById('canvas-container');
+            
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+
+            const pointLight = new THREE.PointLight(0x00ffff, 2, 50);
+            pointLight.position.set(5, 5, 5);
+            scene.add(pointLight);
+
+            const pointLight2 = new THREE.PointLight(0x8b5cf6, 2, 50);
+            pointLight2.position.set(-5, -5, -5);
+            scene.add(pointLight2);
+
+            buildSphere(currentStyle);
+
+            window.addEventListener('resize', onWindowResize);
+            document.getElementById('code-content').textContent = document.documentElement.outerHTML;
+            animate();
+        }
+
+        function buildSphere(style) {
+            if (sphere) scene.remove(sphere);
+            if (particlesMesh) scene.remove(particlesMesh);
+
+            if (style === 'wireframe') {
+                const geometry = new THREE.IcosahedronGeometry(1.8, 4);
+                const material = new THREE.MeshStandardMaterial({
+                    color: 0x00ffff,
+                    wireframe: true,
+                    roughness: 0.1,
+                    metalness: 0.8
+                });
+                sphere = new THREE.Mesh(geometry, material);
+                scene.add(sphere);
+            } else if (style === 'normal') {
+                const geometry = new THREE.SphereGeometry(1.6, 64, 64);
+                const material = new THREE.MeshNormalMaterial({ wireframe: false });
+                sphere = new THREE.Mesh(geometry, material);
+                scene.add(sphere);
+            } else if (style === 'crystal') {
+                const geometry = new THREE.DodecahedronGeometry(1.7, 1);
+                const material = new THREE.MeshPhysicalMaterial({
+                    color: 0x3b82f6,
+                    roughness: 0.2,
+                    metalness: 0.5,
+                    transmission: 0.6,
+                    thickness: 1.2,
+                    wireframe: false
+                });
+                sphere = new THREE.Mesh(geometry, material);
+                scene.add(sphere);
+            } else if (style === 'particles') {
+                const particleCount = 2500;
+                const geometry = new THREE.BufferGeometry();
+                const positions = new Float32Array(particleCount * 3);
+
+                for (let i = 0; i &lt; particleCount * 3; i += 3) {
+                    const u = Math.random();
+                    const v = Math.random();
+                    const theta = u * 2.0 * Math.PI;
+                    const phi = Math.acos(2.0 * v - 1.0);
+                    const r = 1.6 + (Math.random() - 0.5) * 0.3;
+                    
+                    positions[i] = r * Math.sin(phi) * Math.cos(theta);
+                    positions[i+1] = r * Math.sin(phi) * Math.sin(theta);
+                    positions[i+2] = r * Math.cos(phi);
+                }
+
+                geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                const material = new THREE.PointsMaterial({
+                    size: 0.04,
+                    color: 0x06b6d4,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                particlesMesh = new THREE.Points(geometry, material);
+                scene.add(particlesMesh);
+            }
+        }
+
+        function updateSphereStyle() {
+            currentStyle = document.getElementById('sphere-style').value;
+            buildSphere(currentStyle);
+        }
+
+        async function toggleMicrophone() {
+            const micBtn = document.getElementById('mic-btn');
+            const micIcon = document.getElementById('mic-icon');
+            const micText = document.getElementById('mic-text');
+            const statusDot = document.getElementById('status-dot');
+            const alertBox = document.getElementById('alert-box');
+
+            if (!isListening) {
+                try {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+                    
+                    analyser = audioCtx.createAnalyser();
+                    analyser.fftSize = 256;
+                    
+                    microphone = audioCtx.createMediaStreamSource(stream);
+                    microphone.connect(analyser);
+                    
+                    dataArray = new Uint8Array(analyser.frequencyBinCount);
+                    
+                    isListening = true;
+                    micBtn.classList.remove('from-cyan-500', 'to-blue-600', 'shadow-cyan-500/25');
+                    micBtn.classList.add('from-red-500', 'to-rose-600', 'shadow-rose-500/25');
+                    micIcon.className = 'fa-solid fa-microphone-slash text-lg';
+                    micText.textContent = 'Stop Voice Input';
+                    statusDot.className = 'w-3 h-3 rounded-full bg-rose-500 animate-ping';
+                    alertBox.classList.add('hidden');
+                } catch (err) {
+                    console.error('Microphone error:', err);
+                    alertBox.classList.remove('hidden');
+                    document.getElementById('alert-text').textContent = 'Microphone permission denied or unavailable.';
+                }
+            } else {
+                if (audioCtx) audioCtx.close();
+                isListening = false;
+                micBtn.classList.remove('from-red-500', 'to-rose-600', 'shadow-rose-500/25');
+                micBtn.classList.add('from-cyan-500', 'to-blue-600', 'shadow-cyan-500/25');
+                micIcon.className = 'fa-solid fa-microphone text-lg';
+                micText.textContent = 'Start Voice Input';
+                statusDot.className = 'w-3 h-3 rounded-full bg-cyan-400 animate-pulse';
+                document.getElementById('volume-bar').style.width = '0%';
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const delta = clock.getDelta();
+            let voiceVolume = 0;
+
+            if (isListening &amp;&amp; analyser) {
+                analyser.getByteFrequencyData(dataArray);
+                let sum = 0;
+                for (let i = 0; i &lt; dataArray.length; i++) {
+                    sum += dataArray[i];
+                }
+                voiceVolume = (sum / dataArray.length) / 255.0; // Normalized 0 to 1
+                document.getElementById('volume-bar').style.width = `${Math.min(voiceVolume * 150, 100)}%`;
+            }
+
+            const sensitivity = parseFloat(document.getElementById('sensitivity-slider').value);
+            const dynamicSpeed = 0.5 + (voiceVolume * sensitivity * 8.0);
+
+            // Rotate sphere automatically and faster when speaking
+            const targetMesh = sphere || particlesMesh;
+            if (targetMesh) {
+                targetMesh.rotation.x += delta * dynamicSpeed * 0.6;
+                targetMesh.rotation.y += delta * dynamicSpeed * 0.9;
+
+                // Pulse scale based on voice intensity
+                const targetScale = 1.0 + (voiceVolume * sensitivity * 0.6);
+                targetMesh.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.2);
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.toggle('hidden');
+        }
+
+        function copyCode() {
+            const codeText = document.documentElement.outerHTML;
+            const textarea = document.createElement('textarea');
+            textarea.value = codeText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                alert('Code copied to clipboard successfully!');
+            } catch (err) {
+                console.error('Failed to copy code', err);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        window.onload = init3D;
+    &lt;/script&gt;
+
+&lt;/body&gt;&lt;/html&gt;</pre>
+                </div>
+            </div>
+            <div class="p-4 border-t border-white/10 bg-white/5 flex justify-end">
+                <button onclick="toggleModal('codeModal')" class="bg-white/10 hover:bg-white/20 px-5 py-2 rounded-xl text-sm font-semibold transition">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="guideModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-4">
+        <div class="glass-panel w-full max-w-2xl max-h-[85vh] rounded-3xl flex flex-col overflow-hidden shadow-2xl border border-white/10">
+            <div class="p-5 border-b border-white/10 flex justify-between items-center bg-white/5">
+                <h3 class="font-bold text-lg text-indigo-400 flex items-center space-x-2">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>How to Build &amp; Host This 3D Page</span>
+                </h3>
+                <button onclick="toggleModal('guideModal')" class="text-gray-400 hover:text-white transition p-2"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-4 text-sm text-gray-300 leading-relaxed">
+                <h4 class="font-bold text-white text-base">1. Local Setup</h4>
+                <p>Save the exported code into a file named <code class="bg-black/40 px-2 py-0.5 rounded text-cyan-300 font-mono">index.html</code> on your computer. Double-click the file to open it directly in any modern browser (Chrome, Safari, Firefox, Edge).</p>
+                
+                <h4 class="font-bold text-white text-base">2. Microphone Permissions</h4>
+                <p>When you click <strong>"Start Voice Input"</strong>, your browser will prompt you for microphone access. Make sure to allow it. Note that modern browsers require either <code class="bg-black/40 px-2 py-0.5 rounded text-cyan-300 font-mono">https://</code> or <code class="bg-black/40 px-2 py-0.5 rounded text-cyan-300 font-mono">http://localhost</code> to activate the microphone API.</p>
+
+                <h4 class="font-bold text-white text-base">3. Hosting for Free</h4>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>GitHub Pages:</strong> Push your <code class="text-cyan-300 font-mono">index.html</code> to a GitHub repository and enable Pages in settings.</li>
+                    <li><strong>Vercel / Netlify:</strong> Drag and drop your project folder or connect your Git repository for instant live deployment with HTTPS enabled out of the box.</li>
+                </ul>
+            </div>
+            <div class="p-4 border-t border-white/10 bg-white/5 flex justify-end">
+                <button onclick="toggleModal('guideModal')" class="bg-white/10 hover:bg-white/20 px-5 py-2 rounded-xl text-sm font-semibold transition">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let scene, camera, renderer, sphere, particlesMesh, audioCtx, analyser, microphone, dataArray;
+        let isListening = false;
+        let currentStyle = 'wireframe';
+        let clock = new THREE.Clock();
+
+        function init3D() {
+            const container = document.getElementById('canvas-container');
+            
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+
+            const pointLight = new THREE.PointLight(0x00ffff, 2, 50);
+            pointLight.position.set(5, 5, 5);
+            scene.add(pointLight);
+
+            const pointLight2 = new THREE.PointLight(0x8b5cf6, 2, 50);
+            pointLight2.position.set(-5, -5, -5);
+            scene.add(pointLight2);
+
+            buildSphere(currentStyle);
+
+            window.addEventListener('resize', onWindowResize);
+            document.getElementById('code-content').textContent = document.documentElement.outerHTML;
+            animate();
+        }
+
+        function buildSphere(style) {
+            if (sphere) scene.remove(sphere);
+            if (particlesMesh) scene.remove(particlesMesh);
+
+            if (style === 'wireframe') {
+                const geometry = new THREE.IcosahedronGeometry(1.8, 4);
+                const material = new THREE.MeshStandardMaterial({
+                    color: 0x00ffff,
+                    wireframe: true,
+                    roughness: 0.1,
+                    metalness: 0.8
+                });
+                sphere = new THREE.Mesh(geometry, material);
+                scene.add(sphere);
+            } else if (style === 'normal') {
+                const geometry = new THREE.SphereGeometry(1.6, 64, 64);
+                const material = new THREE.MeshNormalMaterial({ wireframe: false });
+                sphere = new THREE.Mesh(geometry, material);
+                scene.add(sphere);
+            } else if (style === 'crystal') {
+                const geometry = new THREE.DodecahedronGeometry(1.7, 1);
+                const material = new THREE.MeshPhysicalMaterial({
+                    color: 0x3b82f6,
+                    roughness: 0.2,
+                    metalness: 0.5,
+                    transmission: 0.6,
+                    thickness: 1.2,
+                    wireframe: false
+                });
+                sphere = new THREE.Mesh(geometry, material);
+                scene.add(sphere);
+            } else if (style === 'particles') {
+                const particleCount = 2500;
+                const geometry = new THREE.BufferGeometry();
+                const positions = new Float32Array(particleCount * 3);
+
+                for (let i = 0; i < particleCount * 3; i += 3) {
+                    const u = Math.random();
+                    const v = Math.random();
+                    const theta = u * 2.0 * Math.PI;
+                    const phi = Math.acos(2.0 * v - 1.0);
+                    const r = 1.6 + (Math.random() - 0.5) * 0.3;
+                    
+                    positions[i] = r * Math.sin(phi) * Math.cos(theta);
+                    positions[i+1] = r * Math.sin(phi) * Math.sin(theta);
+                    positions[i+2] = r * Math.cos(phi);
+                }
+
+                geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                const material = new THREE.PointsMaterial({
+                    size: 0.04,
+                    color: 0x06b6d4,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                particlesMesh = new THREE.Points(geometry, material);
+                scene.add(particlesMesh);
+            }
+        }
+
+        function updateSphereStyle() {
+            currentStyle = document.getElementById('sphere-style').value;
+            buildSphere(currentStyle);
+        }
+
+        async function toggleMicrophone() {
+            const micBtn = document.getElementById('mic-btn');
+            const micIcon = document.getElementById('mic-icon');
+            const micText = document.getElementById('mic-text');
+            const statusDot = document.getElementById('status-dot');
+            const alertBox = document.getElementById('alert-box');
+
+            if (!isListening) {
+                try {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+                    
+                    analyser = audioCtx.createAnalyser();
+                    analyser.fftSize = 256;
+                    
+                    microphone = audioCtx.createMediaStreamSource(stream);
+                    microphone.connect(analyser);
+                    
+                    dataArray = new Uint8Array(analyser.frequencyBinCount);
+                    
+                    isListening = true;
+                    micBtn.classList.remove('from-cyan-500', 'to-blue-600', 'shadow-cyan-500/25');
+                    micBtn.classList.add('from-red-500', 'to-rose-600', 'shadow-rose-500/25');
+                    micIcon.className = 'fa-solid fa-microphone-slash text-lg';
+                    micText.textContent = 'Stop Voice Input';
+                    statusDot.className = 'w-3 h-3 rounded-full bg-rose-500 animate-ping';
+                    alertBox.classList.add('hidden');
+                } catch (err) {
+                    console.error('Microphone error:', err);
+                    alertBox.classList.remove('hidden');
+                    document.getElementById('alert-text').textContent = 'Microphone permission denied or unavailable.';
+                }
+            } else {
+                if (audioCtx) audioCtx.close();
+                isListening = false;
+                micBtn.classList.remove('from-red-500', 'to-rose-600', 'shadow-rose-500/25');
+                micBtn.classList.add('from-cyan-500', 'to-blue-600', 'shadow-cyan-500/25');
+                micIcon.className = 'fa-solid fa-microphone text-lg';
+                micText.textContent = 'Start Voice Input';
+                statusDot.className = 'w-3 h-3 rounded-full bg-cyan-400 animate-pulse';
+                document.getElementById('volume-bar').style.width = '0%';
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const delta = clock.getDelta();
+            let voiceVolume = 0;
+
+            if (isListening && analyser) {
+                analyser.getByteFrequencyData(dataArray);
+                let sum = 0;
+                for (let i = 0; i < dataArray.length; i++) {
+                    sum += dataArray[i];
+                }
+                voiceVolume = (sum / dataArray.length) / 255.0; // Normalized 0 to 1
+                document.getElementById('volume-bar').style.width = `${Math.min(voiceVolume * 150, 100)}%`;
+            }
+
+            const sensitivity = parseFloat(document.getElementById('sensitivity-slider').value);
+            const dynamicSpeed = 0.5 + (voiceVolume * sensitivity * 8.0);
+
+            // Rotate sphere automatically and faster when speaking
+            const targetMesh = sphere || particlesMesh;
+            if (targetMesh) {
+                targetMesh.rotation.x += delta * dynamicSpeed * 0.6;
+                targetMesh.rotation.y += delta * dynamicSpeed * 0.9;
+
+                // Pulse scale based on voice intensity
+                const targetScale = 1.0 + (voiceVolume * sensitivity * 0.6);
+                targetMesh.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.2);
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.toggle('hidden');
+        }
+
+        function copyCode() {
+            const codeText = document.documentElement.outerHTML;
+            const textarea = document.createElement('textarea');
+            textarea.value = codeText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                alert('Code copied to clipboard successfully!');
+            } catch (err) {
+                console.error('Failed to copy code', err);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        window.onload = init3D;
+    </script>
+
+</body></html>
